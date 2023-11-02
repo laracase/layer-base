@@ -1,0 +1,26 @@
+{
+    "name": "layer/base",
+    "type": "laralib-layer",
+    "description": "laravel lib",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "carl",
+            "email": "2009wpeng@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-redis": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "laravel/framework": "^v10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Layer\\Base\\": ""
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
