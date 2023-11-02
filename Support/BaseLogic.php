@@ -4,7 +4,7 @@
  * 公共的逻辑方法
  */
 
-namespace Layer\Base\Logics;
+namespace Layer\Base\Support;
 
 use Layer\Base\Traits\UtilTrait;
 use Redis;

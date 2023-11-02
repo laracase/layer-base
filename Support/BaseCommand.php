@@ -1,6 +1,6 @@
 <?php
 
-namespace Layer\Base\Commands;
+namespace Layer\Base\Support;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Foundation\Application;

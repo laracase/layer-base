@@ -1,6 +1,6 @@
 <?php
 
-namespace Layer\Base\Controllers;
+namespace Layer\Base\Support;
 
 use Closure;
 use Illuminate\Contracts\Validation\Factory;

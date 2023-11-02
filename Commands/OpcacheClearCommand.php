@@ -2,6 +2,8 @@
 
 namespace Layer\Base\Commands;
 
+use Layer\Base\Support\BaseCommand;
+
 class OpcacheClearCommand extends BaseCommand
 {
     /**
