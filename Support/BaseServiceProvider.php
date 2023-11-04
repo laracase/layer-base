@@ -48,7 +48,6 @@ abstract class BaseServiceProvider extends ServiceProvider
     public function loadAssets(): void
     {
         if (method_exists($this, 'loadModule') && $modulePath = $this->loadModule()) {
-            // var_dump($modulePath);
             // register module route
             // 使用mergeConfigFrom方法，可以使用缓存
             if (!$this->app->routesAreCached()) {

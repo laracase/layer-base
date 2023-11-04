@@ -44,25 +44,26 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
-        $lamoRootPath = $this->app->basePath('lamo');
-        $modules = scandir($lamoRootPath);
-        foreach ($modules as $module) {
-            if (!in_array($module, ['.', '..', '.git', 'README.md'])) {
-                // register module service
-                $module = ucfirst($module);
-                $moduleServiceProvider = "\\Lamo\\$module\\Providers\\ServiceProvider";
-                if (class_exists($moduleServiceProvider)) {
-                    $this->app->register($moduleServiceProvider);
-                }
-
-                // register module event
-                $eventServiceProvider = "\\Lamo\\$module\\Providers\\EventServiceProvider";
-                if (class_exists($eventServiceProvider)) {
-                    // var_dump($eventServiceProvider);
-                    $this->app->register($eventServiceProvider);
-                }
-            }
-        }
+        // @todo 不要这一段，通过 laravel discover service 进行注入
+//        $lamoRootPath = $this->app->basePath('lamo');
+//        $modules = scandir($lamoRootPath);
+//        foreach ($modules as $module) {
+//            if (!in_array($module, ['.', '..', '.git', 'README.md'])) {
+//                // register module service
+//                $module = ucfirst($module);
+//                $moduleServiceProvider = "\\Lamo\\$module\\Providers\\ServiceProvider";
+//                if (class_exists($moduleServiceProvider)) {
+//                    $this->app->register($moduleServiceProvider);
+//                }
+//
+//                // register module event
+//                $eventServiceProvider = "\\Lamo\\$module\\Providers\\EventServiceProvider";
+//                if (class_exists($eventServiceProvider)) {
+//                    // var_dump($eventServiceProvider);
+//                    $this->app->register($eventServiceProvider);
+//                }
+//            }
+//        }
     }
 
     public function register(): void
