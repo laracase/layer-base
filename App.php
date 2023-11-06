@@ -18,7 +18,7 @@ class App extends Application
      *
      * @return void
      */
-    public function registerCoreContainerAliases(): void
+    public function registerCoreContainerAliases1(): void
     {
         foreach ([
                      'app' => [self::class, \Illuminate\Contracts\Container\Container::class, \Illuminate\Contracts\Foundation\Application::class, \Psr\Container\ContainerInterface::class],
