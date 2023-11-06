@@ -11,7 +11,6 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Layer\Dbal\Providers\DatabaseServiceProvider;
 use Layer\Base\Commands\OpcacheClearCommand;
 use Layer\Base\Commands\OpcacheCommand;
 use Layer\Base\Kernel\Console;
@@ -25,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->app->register(DatabaseServiceProvider::class);
+        // 不要依赖其他库
+//        $this->app->register(DatabaseServiceProvider::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

@@ -6,7 +6,6 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider;
 use Illuminate\Foundation\Providers\ComposerServiceProvider;
 use Illuminate\Support\AggregateServiceProvider;
-use Layer\Dbal\Providers\MigrationServiceProvider;
 
 class ConsoleServiceProvider extends AggregateServiceProvider implements DeferrableProvider
 {
@@ -17,7 +16,8 @@ class ConsoleServiceProvider extends AggregateServiceProvider implements Deferra
      */
     protected $providers = [
         ArtisanServiceProvider::class,
-        MigrationServiceProvider::class,
+        // 不要依赖其他库
+//        MigrationServiceProvider::class,
         ComposerServiceProvider::class,
     ];
 }
