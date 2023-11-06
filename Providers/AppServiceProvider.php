@@ -24,9 +24,6 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        // 不要依赖其他库
-//        $this->app->register(DatabaseServiceProvider::class);
-
         if ($this->app->runningInConsole()) {
             $this->commands([
                 OpcacheCommand::class,
@@ -43,27 +40,6 @@ class AppServiceProvider extends ServiceProvider
                 Route::setBasePath($basePath);
             }
         }
-
-        // @todo 不要这一段，通过 laravel discover service 进行注入
-//        $lamoRootPath = $this->app->basePath('lamo');
-//        $modules = scandir($lamoRootPath);
-//        foreach ($modules as $module) {
-//            if (!in_array($module, ['.', '..', '.git', 'README.md'])) {
-//                // register module service
-//                $module = ucfirst($module);
-//                $moduleServiceProvider = "\\Lamo\\$module\\Providers\\ServiceProvider";
-//                if (class_exists($moduleServiceProvider)) {
-//                    $this->app->register($moduleServiceProvider);
-//                }
-//
-//                // register module event
-//                $eventServiceProvider = "\\Lamo\\$module\\Providers\\EventServiceProvider";
-//                if (class_exists($eventServiceProvider)) {
-//                    // var_dump($eventServiceProvider);
-//                    $this->app->register($eventServiceProvider);
-//                }
-//            }
-//        }
     }
 
     public function register(): void

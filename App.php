@@ -85,11 +85,9 @@ class App extends Application
 
         $this->instance(Container::class, $this);
 
-        $this->singleton(PackageManifest::class, function () {
-            return new PackageManifest(
-                new Filesystem, $this->basePath(), $this->getCachedPackagesPath()
-            );
-        });
+        $this->singleton(PackageManifest::class, fn () => new PackageManifest(
+            new Filesystem, $this->basePath(), $this->getCachedPackagesPath()
+        ));
     }
 
     /**
