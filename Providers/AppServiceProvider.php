@@ -40,6 +40,27 @@ class AppServiceProvider extends ServiceProvider
                 Route::setBasePath($basePath);
             }
         }
+
+        // @todo 本地开发，快速引入对应模块，不需要安装
+        $lamoRootPath = $this->app->basePath('lamo');
+        $modules = scandir($lamoRootPath);
+        foreach ($modules as $module) {
+            if (!in_array($module, ['.', '..', '.git', 'README.md'])) {
+                // register module service
+                $module = ucfirst($module);
+                $moduleServiceProvider = "\\Lamo\\$module\\Providers\\ServiceProvider";
+                if (class_exists($moduleServiceProvider)) {
+                    $this->app->register($moduleServiceProvider);
+                }
+
+                // register module event
+                $eventServiceProvider = "\\Lamo\\$module\\Providers\\EventServiceProvider";
+                if (class_exists($eventServiceProvider)) {
+                    // var_dump($eventServiceProvider);
+                    $this->app->register($eventServiceProvider);
+                }
+            }
+        }
     }
 
     public function register(): void
