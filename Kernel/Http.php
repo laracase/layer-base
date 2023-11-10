@@ -17,7 +17,7 @@ class Http extends Kernel
 
     public function addMiddlewareGroup($group, $middleware)
     {
-        if (array_search($middleware, $this->middlewareGroups[$group]) === false) {
+        if (!in_array($middleware, $this->middlewareGroups[$group])) {
             array_unshift($this->middlewareGroups[$group], $middleware);
         }
 
