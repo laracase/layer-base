@@ -42,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // @todo 本地开发，快速引入对应模块，不需要安装
+        // 加载共有模块
         $lamoRootPath = $this->app->basePath('lamo');
         $modules = scandir($lamoRootPath);
         foreach ($modules as $module) {
@@ -52,12 +53,19 @@ class AppServiceProvider extends ServiceProvider
                 if (class_exists($moduleServiceProvider)) {
                     $this->app->register($moduleServiceProvider);
                 }
+            }
+        }
 
-                // register module event
-                $eventServiceProvider = "\\Lamo\\$module\\Providers\\EventServiceProvider";
-                if (class_exists($eventServiceProvider)) {
-                    // var_dump($eventServiceProvider);
-                    $this->app->register($eventServiceProvider);
+        // 加载私有模块
+        $lamoRootPath = $this->app->basePath('lamp');
+        $modules = scandir($lamoRootPath);
+        foreach ($modules as $module) {
+            if (!in_array($module, ['.', '..', '.git', 'README.md'])) {
+                // register module service
+                $module = ucfirst($module);
+                $moduleServiceProvider = "\\Lamp\\$module\\Providers\\ServiceProvider";
+                if (class_exists($moduleServiceProvider)) {
+                    $this->app->register($moduleServiceProvider);
                 }
             }
         }
