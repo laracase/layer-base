@@ -42,21 +42,21 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // @todo 本地开发，快速引入对应模块，不需要安装
-        // 加载共有模块
-        $lamoRootPath = $this->app->basePath('lamo');
+        // 加载共享的模块
+        $lamoRootPath = $this->app->basePath('lams');
         $modules = scandir($lamoRootPath);
         foreach ($modules as $module) {
             if (!in_array($module, ['.', '..', '.git', 'README.md'])) {
                 // register module service
                 $module = ucfirst($module);
-                $moduleServiceProvider = "\\Lamo\\$module\\Providers\\ServiceProvider";
+                $moduleServiceProvider = "\\Lams\\$module\\Providers\\ServiceProvider";
                 if (class_exists($moduleServiceProvider)) {
                     $this->app->register($moduleServiceProvider);
                 }
             }
         }
 
-        // 加载私有模块
+        // 加载私有的模块
         $lamoRootPath = $this->app->basePath('lamp');
         $modules = scandir($lamoRootPath);
         foreach ($modules as $module) {
