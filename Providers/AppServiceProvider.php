@@ -11,8 +11,6 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Layer\Base\Commands\OpcacheClearCommand;
-use Layer\Base\Commands\OpcacheCommand;
 use Layer\Base\Kernel\Console;
 use Layer\Base\Kernel\Exception;
 use Layer\Base\Kernel\Http;
@@ -24,13 +22,6 @@ class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                OpcacheCommand::class,
-                OpcacheClearCommand::class,
-            ]);
-        }
-
         if (!$this->app->routesAreCached()) {
             $basePath = config('app.base_path');
             if ($this->app->environment('local') && $basePath) {
