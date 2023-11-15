@@ -77,6 +77,11 @@ class Exception extends Handler
         }
         // 非调试环境，错误提示友好
         if (!config('app.debug')) {
+            // 自定义逻辑错误
+            if ($e instanceof BaseException) {
+                return $this->sendFailedJson($e->getStatusCode(), $e->getMessage(), $e->getCode());
+            }
+
             // 路由不存在
             if ($e instanceof NotFoundHttpException) {
                 if (app()->environment('production')) {
@@ -86,7 +91,8 @@ class Exception extends Handler
                     return $this->sendFailedJson(404, '非法请求，路由不存在');
                 }
             }
-            // 数据验证不通过
+
+            // 数据格式验证不通过
             if ($e instanceof ValidationException) {
                 $message = $e->getMessage();
                 if (str_starts_with($message, 'validation.')) {
@@ -94,21 +100,18 @@ class Exception extends Handler
                 }
                 return $this->sendFailedJson(422, $message);
             }
+
+            // 数据验证不通过
             if ($e instanceof ModelNotFoundException) {
-                // 数据验证不通过
                 return $this->sendFailedJson(404, '非法请求，数据不存在');
             }
-            // 处理逻辑错误
-            if ($e instanceof BaseException) {
-                return $this->sendFailedJson($e->getStatusCode(), $e->getMessage(), $e->getCode());
-            }
+
             if ($e instanceof PDOException) {
                 // sql异常
                 return $this->sendFailedJson(522, '系统错误～');
-            } else {
-                // 其他错误，系统内部错误
-                return $this->sendFailedJson(521, '未知错误～', $e->getCode());
             }
+            // 其他错误，系统内部错误
+            return $this->sendFailedJson(521, '未知错误～', $e->getCode());
         } else {
             return $this->prepareJsonResponse($request, $e);
         }
