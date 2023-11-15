@@ -91,7 +91,7 @@ class App extends Application
     }
 
     /**
-     * Register all of the base service providers.
+     * Register all the base service providers.
      *
      * @return void
      */

@@ -8,8 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
-use Layer\Base\Exceptions\BaseAuthException;
-use Layer\Base\Exceptions\BaseLogicException;
+use Layer\Base\Support\BaseException;
 use Layer\Base\Traits\ResponseTrait;
 use PDOException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -57,7 +56,7 @@ class Exception extends Handler
      *
      * @param Throwable $e
      * @return void
-     * @throws Exception
+     * @throws Throwable
      */
     public function report(Throwable $e): void
     {
@@ -73,7 +72,7 @@ class Exception extends Handler
     public function render($request, Throwable $e): Response|JsonResponse
     {
         // 认证错误统一返回401
-        if ($e instanceof BaseAuthException) {
+        if ($e instanceof BaseException && $e->getStatusCode() === 401) {
             return $this->sendFailedJson($e->getStatusCode(), $e->getMessage(), $e->getCode());
         }
         // 非调试环境，错误提示友好
@@ -100,7 +99,7 @@ class Exception extends Handler
                 return $this->sendFailedJson(404, '非法请求，数据不存在');
             }
             // 处理逻辑错误
-            if ($e instanceof BaseLogicException) {
+            if ($e instanceof BaseException) {
                 return $this->sendFailedJson($e->getStatusCode(), $e->getMessage(), $e->getCode());
             }
             if ($e instanceof PDOException) {
