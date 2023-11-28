@@ -15,5 +15,11 @@ class RouteServiceProvider extends RoutingServiceProvider
     {
         $this->registerRouter();
         $this->registerUrlGenerator();
+        $this->registerRedirector();
+        $this->registerPsrRequest();
+        $this->registerPsrResponse();
+        $this->registerResponseFactory();
+        $this->registerCallableDispatcher();
+        $this->registerControllerDispatcher();
     }
 }
