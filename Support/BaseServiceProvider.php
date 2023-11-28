@@ -28,7 +28,8 @@ abstract class BaseServiceProvider extends ServiceProvider
         $this->loadAssets();
 
         $this->booted(function () {
-            // 必须在 booted 之后执行，不然拿不到 files aliases
+            // 必须在 booted 之后执行，不然拿不到 class files aliases
+            $this->loadRoutes();
             if (method_exists($this, 'loadCommands')) {
                 $this->loadCommands();
             }
@@ -44,26 +45,12 @@ abstract class BaseServiceProvider extends ServiceProvider
     }
 
     /**
-     * 加载 routes 和 migrations
+     * 加载 config 和 migrations
      * @return void
      */
     public function loadAssets(): void
     {
         if (method_exists($this, 'loadModule') && $modulePath = $this->loadModule()) {
-            // register module route
-            // 使用mergeConfigFrom方法，可以使用缓存
-            if (!$this->app->routesAreCached()) {
-                $routesPath = $modulePath . "/routes/";
-                if (is_dir($routesPath)) {
-                    $routes = scandir($routesPath);
-                    foreach ($routes as $route) {
-                        if ($this->shouldLoadRoute($route)) {
-                            $this->loadRoutesFrom($routesPath . $route);
-                        }
-                    }
-                }
-            }
-
             // register module database
             if ($this->app->runningInConsole()) {
                 // migrations
@@ -81,6 +68,29 @@ abstract class BaseServiceProvider extends ServiceProvider
                     foreach ($configs as $config) {
                         if (!in_array($config, ['.', '..'])) {
                             $this->mergeConfigFrom($configPath . $config, pathinfo($config)['filename']);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 加载 routes 和 migrations
+     * @return void
+     */
+    public function loadRoutes(): void
+    {
+        if (method_exists($this, 'loadModule') && $modulePath = $this->loadModule()) {
+            // register module route
+            // 使用mergeConfigFrom方法，可以使用缓存
+            if (!$this->app->routesAreCached()) {
+                $routesPath = $modulePath . "/routes/";
+                if (is_dir($routesPath)) {
+                    $routes = scandir($routesPath);
+                    foreach ($routes as $route) {
+                        if ($this->shouldLoadRoute($route)) {
+                            $this->loadRoutesFrom($routesPath . $route);
                         }
                     }
                 }
