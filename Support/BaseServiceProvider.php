@@ -24,10 +24,11 @@ abstract class BaseServiceProvider extends ServiceProvider
         parent::__construct($app);
         /** @var Http $kernel */
         $this->kernel = $app->make(Kernel::class);
+        // 加载相关配置
+        $this->loadAssets();
 
         $this->booted(function () {
             // 必须在 booted 之后执行，不然拿不到 files aliases
-            $this->loadAssets();
             if (method_exists($this, 'loadCommands')) {
                 $this->loadCommands();
             }
